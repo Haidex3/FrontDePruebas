@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { registerResponsible } from '../api/script';
+import { registerResponsible } from '../api/script'; // Ya importado
 
 function ResponsibleForm() {
     const [responsibleData, setResponsibleData] = useState({
@@ -32,7 +32,7 @@ function ResponsibleForm() {
         };
 
         try {
-            const result = await registerResponsible(responsible);
+            const result = await registerResponsible(responsible); // Usando la importación
             setResponseMessage(result.message);
         } catch (error) {
             setResponseMessage('An error occurred while registering the responsible.');

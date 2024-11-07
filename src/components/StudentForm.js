@@ -31,7 +31,7 @@ function StudentForm() {
         };
 
         try {
-            const result = await registerStudent(student);
+            const result = await registerStudent(student); // Usando la función importada
             setResponseMessage(result.message);
         } catch (error) {
             setResponseMessage('An error occurred while registering the student.');

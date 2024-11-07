@@ -2,7 +2,7 @@ const apiUrl = 'http://localhost:8081';
 
 export async function registerStudent(student) {
     try {
-        const response = await fetch(`registerStudent`, {
+        const response = await fetch(`${apiUrl}/registerStudent`, {  // Usar apiUrl como base
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ export async function registerStudent(student) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to register student');
+            throw new Error('Failed to register student for back');
         }
 
         return await response.json();
@@ -23,7 +23,7 @@ export async function registerStudent(student) {
 
 export async function registerResponsible(responsible) {
     try {
-        const response = await fetch(`registerResponsible`, {
+        const response = await fetch(`${apiUrl}/registerResponsible`, {  // Usar apiUrl como base
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export async function registerResponsible(responsible) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to register responsible');
+            throw new Error('Failed to register responsible for back');
         }
 
         return await response.json();
