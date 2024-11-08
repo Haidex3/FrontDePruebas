@@ -2,7 +2,7 @@ const apiUrl = 'http://localhost:8081';
 
 export async function registerStudent(student) {
     try {
-        const response = await fetch(`${apiUrl}/registerStudent`, {  // Usar apiUrl como base
+        const response = await fetch(`${apiUrl}/registerStudent`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export async function registerStudent(student) {
 
 export async function registerResponsible(responsible) {
     try {
-        const response = await fetch(`${apiUrl}/registerResponsible`, {  // Usar apiUrl como base
+        const response = await fetch(`${apiUrl}/registerResponsible`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

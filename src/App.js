@@ -7,8 +7,8 @@ function App() {
     return (
         <div>
             <div className="content-form">
-                <StudentForm />  {/* No es necesario pasar registerStudent */}
-                <ResponsibleForm />  {/* No es necesario pasar registerResponsible */}
+                <StudentForm />  {}
+                <ResponsibleForm />  {}
             </div>
         </div>
     );

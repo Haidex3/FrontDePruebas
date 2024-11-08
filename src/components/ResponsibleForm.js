@@ -32,7 +32,7 @@ function ResponsibleForm() {
         };
 
         try {
-            const result = await registerResponsible(responsible); // Usando la importación
+            const result = await registerResponsible(responsible);
             setResponseMessage(result.message);
         } catch (error) {
             setResponseMessage('An error occurred while registering the responsible.');
