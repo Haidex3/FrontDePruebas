@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { registerResponsible } from '../api/script'; // Ya importado
+import { registerResponsible } from '../api/script';
 
 function ResponsibleForm() {
     const [responsibleData, setResponsibleData] = useState({
@@ -22,17 +22,22 @@ function ResponsibleForm() {
     };
 
     const handleRegisterResponsible = async () => {
-        const responsible = {
-            name: responsibleData.responsibleName,
-            email: responsibleData.responsibleEmail,
-            phoneNumber: responsibleData.responsiblePhone,
-            address: responsibleData.responsibleAddress,
-            document: responsibleData.responsibleDocument,
-            typeDocument: responsibleData.typeDocument,
-        };
+        const documentValue = parseInt(responsibleData.responsibleDocument, 10);
+
+        if (isNaN(documentValue)) {
+            setResponseMessage('Please enter a valid number for the document.');
+            return;
+        }
 
         try {
-            const result = await registerResponsible(responsible);
+            const result = await registerResponsible(
+                documentValue,
+                responsibleData.typeDocument,
+                responsibleData.responsibleName,
+                responsibleData.responsiblePhone,
+                responsibleData.responsibleEmail,
+                responsibleData.responsibleAddress
+            );
             setResponseMessage(result.message);
         } catch (error) {
             setResponseMessage('An error occurred while registering the responsible.');

@@ -2,6 +2,7 @@ const apiUrl = 'http://localhost:8081';
 
 export async function registerStudent(student) {
     try {
+
         const response = await fetch(`${apiUrl}/registerStudent`, {
             method: 'POST',
             headers: {
@@ -21,18 +22,29 @@ export async function registerStudent(student) {
     }
 }
 
-export async function registerResponsible(responsible) {
+export async function registerResponsible(numberDocument, newTypeDocument, newName, newPhoneNumber, newEmail, newAddress) {
     try {
+        console.log('Responsible data being sent:', numberDocument);
+
         const response = await fetch(`${apiUrl}/registerResponsible`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(responsible),
+            body: JSON.stringify({
+                document: numberDocument,
+                typeDocument: newTypeDocument,
+                name: newName,
+                phoneNumber: newPhoneNumber,
+                email: newEmail,
+                address: newAddress
+            })
         });
 
         if (!response.ok) {
-            throw new Error('Failed to register responsible for back');
+            const errorDetails = await response.text();
+            console.error('Server responded with error:', response.status, errorDetails);
+            throw new Error(`Failed to register responsible: ${response.status} - ${errorDetails}`);
         }
 
         return await response.json();
@@ -41,3 +53,5 @@ export async function registerResponsible(responsible) {
         throw error;
     }
 }
+
+
