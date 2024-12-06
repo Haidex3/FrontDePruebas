@@ -1,5 +1,28 @@
 const apiUrl = 'http://localhost:8081';
 
+export async function findResponsibleByDocument(numberDocument, token) {
+    try {
+        const response = await fetch(`${apiUrl}/find/responsible/document?responsibleDocNumber=${numberDocument}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+
+        if (!response.ok) {
+            const errorDetails = await response.text();
+            console.error('Server responded with error:', response.status, errorDetails);
+            throw new Error(`Failed to find responsible: ${response.status} - ${errorDetails}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error finding responsible:', error);
+        throw error;
+    }
+}
+
 export async function registerStudent(student) {
     try {
 
@@ -52,6 +75,8 @@ export async function registerResponsible(numberDocument, newTypeDocument, newNa
         console.error('Error registering responsible:', error);
         throw error;
     }
+
+
 }
 
 

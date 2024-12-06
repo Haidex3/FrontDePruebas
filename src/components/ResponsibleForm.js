@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { registerResponsible } from '../api/script';
+import { registerResponsible, findResponsibleByDocument } from '../api/script';
 
 function ResponsibleForm() {
     const [responsibleData, setResponsibleData] = useState({
@@ -11,7 +11,13 @@ function ResponsibleForm() {
         typeDocument: '',
     });
 
+    const [searchDocument, setSearchDocument] = useState('');
+    const [searchResult, setSearchResult] = useState(null);
     const [responseMessage, setResponseMessage] = useState('');
+
+    const [token] = useState(
+        'eyJ1c2VybmFtZSI6ImxpYnJhcnlkaXJlY3RvciIsImlkIjoiMSIsInJvbGUiOiJhZG1pbiIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.hEb17Q5iBOA7b9eXQq5TsKVKCVzD1muk5mwp2gCyNSE'
+    );
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -21,17 +27,14 @@ function ResponsibleForm() {
         }));
     };
 
+    const handleSearchChange = (e) => {
+        setSearchDocument(e.target.value);
+    };
+
     const handleRegisterResponsible = async () => {
-        const documentValue = parseInt(responsibleData.responsibleDocument, 10);
-
-        if (isNaN(documentValue)) {
-            setResponseMessage('Please enter a valid number for the document.');
-            return;
-        }
-
         try {
             const result = await registerResponsible(
-                documentValue,
+                responsibleData.responsibleDocument,
                 responsibleData.typeDocument,
                 responsibleData.responsibleName,
                 responsibleData.responsiblePhone,
@@ -41,6 +44,22 @@ function ResponsibleForm() {
             setResponseMessage(result.message);
         } catch (error) {
             setResponseMessage('An error occurred while registering the responsible.');
+        }
+    };
+
+    const handleSearchResponsible = async () => {
+        if (!searchDocument.trim()) {
+            setResponseMessage('Please enter a valid document number.');
+            return;
+        }
+
+        try {
+            const result = await findResponsibleByDocument(searchDocument, token);
+            setSearchResult(result);
+            setResponseMessage('Responsible found successfully.');
+        } catch (error) {
+            setSearchResult(null);
+            setResponseMessage('An error occurred while searching for the responsible.');
         }
     };
 
@@ -68,6 +87,24 @@ function ResponsibleForm() {
 
                 <button type="button" onClick={handleRegisterResponsible}>Register Responsible</button>
             </form>
+
+            <h2>Search Responsible</h2>
+            <form>
+                <label htmlFor="searchDocument">Document:</label>
+                <input type="text" id="searchDocument" value={searchDocument} onChange={handleSearchChange} required /><br />
+                <button type="button" onClick={handleSearchResponsible}>Search Responsible</button>
+            </form>
+
+            {searchResult && (
+                <div>
+                    <h3>Responsible Details:</h3>
+                    <p><strong>Name:</strong> {searchResult.name}</p>
+                    <p><strong>Email:</strong> {searchResult.email}</p>
+                    <p><strong>Phone:</strong> {searchResult.phoneNumber}</p>
+                    <p><strong>Address:</strong> {searchResult.address}</p>
+                </div>
+            )}
+
             <div>{responseMessage}</div>
         </div>
     );
